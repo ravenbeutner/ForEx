@@ -1,0 +1,38 @@
+[forall]
+int x;
+int n;
+int c;
+int o; 
+
+c = 0;
+
+while (x < n) {
+    x = x + 1;
+    c = c + o;
+}
+
+[forall]
+int x;
+int n;
+int c;
+int o; 
+
+c = 0;
+
+while (x < n) {
+    x = x + 1;
+    c = c + o;
+}
+
+
+[pre]
+
+x_0 == x_1
+&&
+n_0 == n_1
+&&
+o_0 == o_1
+
+[post]
+
+c_0 == c_1

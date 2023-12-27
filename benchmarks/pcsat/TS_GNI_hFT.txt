@@ -1,0 +1,40 @@
+[forall]
+
+int l;
+int h;
+int x;
+bool a;
+
+x = l;
+a = *;
+while(a) {
+    x = x + 1;
+    a = *;
+}
+
+
+[exists]
+int l;
+int h;
+int x;
+
+x = *;
+if (x >= l) {
+    skip;
+} else {
+    while (true) {
+        skip;
+    }
+}
+
+[pre]
+l_0 == l_1
+
+[post]
+x_0 == x_1
+
+[inv]
+x_0 >= l_0
+
+[maxC]
+1

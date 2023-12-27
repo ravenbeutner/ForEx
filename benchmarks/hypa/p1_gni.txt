@@ -1,0 +1,25 @@
+[forall]
+int h;
+int o;
+
+if (h > 0) {
+    o = - o;
+} else {
+    o = -o + (h - h);
+}
+
+[exists]
+int h;
+int o;
+
+if (h > 0) {
+    o = - o;
+} else {
+    o = -o + (h - h);
+}
+
+[pre]
+o_0 == o_1
+
+[post]
+o_0 == o_1

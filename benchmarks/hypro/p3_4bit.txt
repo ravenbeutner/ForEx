@@ -1,0 +1,27 @@
+[forall]
+bv_4 o;
+bv_4 h;
+bv_4 l;
+
+if * {
+    o = #b1111;
+} else {
+    o = #b0000;
+}
+
+[exists]
+bv_4 o;
+bv_4 h;
+bv_4 l;
+
+if * {
+    o = #b1111;
+} else {
+    o = #b0000;
+}
+
+[pre]
+l_0 == l_1
+
+[post]
+o_0 == o_1

@@ -1,0 +1,43 @@
+[forall]
+bv_2 o;
+bv_2 h;
+bv_2 l;
+
+if * {
+    if(h{0,0} == #b1) {
+        o = #b00;
+    } else {
+        o = #b11;
+    }
+} else {
+    if(h{0,0} == #b1) {
+        o = #b11;
+    } else {
+        o = #b00;
+    }
+}
+
+[exists]
+bv_2 o;
+bv_2 h;
+bv_2 l;
+
+if * {
+    if(h{0,0} == #b1) {
+        o = #b00;
+    } else {
+        o = #b11;
+    }
+} else {
+    if(h{0,0} == #b1) {
+        o = #b11;
+    } else {
+        o = #b00;
+    }
+}
+
+[pre]
+l_0 == l_1
+
+[post]
+o_0 == o_1

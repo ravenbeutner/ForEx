@@ -1,0 +1,30 @@
+[forall]
+bv_5 o;
+bv_5 h;
+bv_5 l;
+
+o = #b11111;
+if(h{0,0} == #b1) {
+    o = bv.! o;
+} else {
+    o = (bv.! o) bv.& (h bv.| bv.! h);
+}
+
+[exists]
+bv_5 o;
+bv_5 h;
+bv_5 l;
+
+o = #b11111;
+if(h{0,0} == #b1) {
+    o = bv.! o;
+} else {
+    o = (bv.! o) bv.& (h bv.| bv.! h);
+    o = bv.! o;
+}
+
+[pre]
+l_0 == l_1
+
+[post]
+o_0 == o_1

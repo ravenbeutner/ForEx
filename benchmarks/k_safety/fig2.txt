@@ -1,0 +1,36 @@
+[forall]
+int x;
+int y;
+
+x = 1;
+y = 2 * x;
+
+while (y > 0) {
+    y = y - 1;
+    x = 2 * x;
+}
+
+[forall]
+int x;
+int y;
+
+x = 1;
+y =  x;
+
+while (y > 0) {
+    y = y - 1;
+    x = 4 * x;
+}
+
+[pre]
+x_0 == x_1
+
+
+[post]
+x_0 == x_1
+
+[inv]
+y_0 == 2 * y_1
+
+[asynchronous]
+2

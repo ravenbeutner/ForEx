@@ -1,0 +1,33 @@
+[forall]
+int l;
+int h;
+int x;
+
+x = *;
+if (x >= l) {
+    skip;
+} else {
+    while (true) {
+        skip;
+    }
+}
+
+[exists]
+int l;
+int h;
+int x;
+
+x = *;
+if (x >= l) {
+    skip;
+} else {
+    while (true) {
+        skip;
+    }
+}
+
+[pre]
+l_0 == l_1
+
+[post]
+x_0 == x_1

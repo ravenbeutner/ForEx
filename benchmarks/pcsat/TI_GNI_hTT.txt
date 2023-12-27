@@ -1,0 +1,21 @@
+[forall]
+int l;
+int h;
+int x;
+
+x = *;
+x = if (x <= l) then l else x;
+
+[exists]
+int l;
+int h;
+int x;
+
+x = *;
+x = if (x <= l) then l else x;
+
+[pre]
+l_0 == l_1
+
+[post]
+x_0 == x_1

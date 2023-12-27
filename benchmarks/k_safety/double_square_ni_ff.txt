@@ -1,0 +1,36 @@
+[forall]
+int x;
+int y;
+int z;
+
+y = 0;
+z = x;
+
+while (z > 0) {
+    z = z - 1;
+    y = y + x;
+}
+
+
+
+[forall]
+int x;
+int y;
+int z;
+
+y = 0;
+z = x;
+
+while (z > 0) {
+    z = z - 1;
+    y = y + x;
+}
+
+
+[pre]
+
+x_0 == x_1
+
+[post]
+
+y_0 == y_1

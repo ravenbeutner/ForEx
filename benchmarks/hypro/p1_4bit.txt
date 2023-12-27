@@ -1,0 +1,30 @@
+[forall]
+bv_4 o;
+bv_4 h;
+bv_4 l;
+
+o = #b1111;
+if(h{0,0} == #b1) {
+    o = bv.! o;
+} else {
+    o = (bv.! o) bv.& (h bv.| bv.! h);
+}
+
+[exists]
+bv_4 o;
+bv_4 h;
+bv_4 l;
+
+o = #b1111;
+if(h{0,0} == #b1) {
+    o = bv.! o;
+} else {
+    o = (bv.! o) bv.& (h bv.| bv.! h);
+    o = bv.! o;
+}
+
+[pre]
+l_0 == l_1
+
+[post]
+o_0 == o_1
