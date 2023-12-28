@@ -31,8 +31,8 @@ To run all instances automatically, run `python run_k_safety.py`.
 
 [1] Automated Software Verification of Hyperliveness. Raven Beutner. TACAS 2024
 
-[2] Software Verification of Hyperproperties Beyond k-Safety. Raven Beutner, Bernd Finkbeiner. CAV 2023
+[2] Software Verification of Hyperproperties Beyond k-Safety. Raven Beutner, Bernd Finkbeiner. CAV 2022
 
 [3] Constraint-Based Relational Verification. Hiroshi Unno, Tachio Terauchi, Eric Koskinen. CAV 2021
 
-[4] Prophecy Variables for Hyperproperty Verification. Raven Beutner, Bernd Finkbeiner. CSF 2023
+[4] Prophecy Variables for Hyperproperty Verification. Raven Beutner, Bernd Finkbeiner. CSF 2022
