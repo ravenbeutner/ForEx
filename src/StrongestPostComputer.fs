@@ -156,7 +156,10 @@ type VerificationSuccessResult =
         VariableTime : Map<Var * int, TimeIndex>;
     }
 
-let mergeResults (recRes1: VerificationSuccessResult) (recRes2: VerificationSuccessResult) = 
+let mergeResults (recRes1: VerificationSuccessResult) (recRes2: VerificationSuccessResult) (unmergedChoiceVariables : list<string * SmtSort>) = 
+    // We merge both results and ensure that the choice variables in both branches are distinct
+    // We only keep the choice variables in unmergedChoiceVariables, i.e., those will stay unmerged in both branches
+    
     let mergesFirst, mergesSecond =
         Set.union (recRes1.VariableTime.Keys |> set) (recRes2.VariableTime.Keys |> set)
         |> Seq.toList 
@@ -197,7 +200,13 @@ let mergeResults (recRes1: VerificationSuccessResult) (recRes2: VerificationSucc
             | _ -> None
             )
         |> Seq.mapi (fun i (x, t) -> 
-            (x, t), ("v" + string (i + Map.count choiceVariablesRemap1), t)
+            if List.contains (x, t) unmergedChoiceVariables && Map.containsKey (x, t) choiceVariablesRemap1  then 
+                // This variable should be shared (and is actually shared in both results)
+                // We use the same name we already fixed for choiceVariablesRemap1
+                (x, t), choiceVariablesRemap1.[x, t]
+            else 
+                // We remap this variable to a fresh ID
+                (x, t), ("v" + string (i + Map.count choiceVariablesRemap1), t)
             )
         |> Map.ofSeq
 
@@ -658,7 +667,7 @@ let computeStrongestPost (config: Configuration) (programList : list<StatementTy
 
                 let recRes2 = verifyRec {info with Trace = BranchRight::info.Trace} (Util.replaceAt targetIndex {Statement = Seq(P2, P'); TypeMapping = t} programList) {execState with Term = (SmtTerm.And [SmtTerm.Not bAsTerm; execState.Term])}
 
-                mergeResults recRes1 recRes2
+                mergeResults recRes1 recRes2 []
 
             | {Statement = Seq(Nondet(P1, P2), P'); TypeMapping = t} ->
                 if targetIndex < k then 
@@ -667,10 +676,10 @@ let computeStrongestPost (config: Configuration) (programList : list<StatementTy
 
                     let recRes2 = verifyRec {info with Trace = BranchRight::info.Trace} (Util.replaceAt targetIndex {Statement = Seq(P2, P'); TypeMapping = t} programList) execState
 
-                    mergeResults recRes1 recRes2
+                    mergeResults recRes1 recRes2 []
                 else 
                     // For existential copies we can choose which branch to follow
-                    let freshBranchVar = 
+                    let freshParameter = 
                         execState.Term
                         |> SmtTerm.usedVars
                         |> Set.map (function
@@ -679,13 +688,14 @@ let computeStrongestPost (config: Configuration) (programList : list<StatementTy
                             )
                         |> Set.unionMany
                         |> generateFreshVar
-                        |> fun x -> ChoiceVariable (x, BOOL)
 
-                    let recRes1 = verifyRec {info with Trace = BranchLeft::info.Trace} (Util.replaceAt targetIndex {Statement = Seq(P1, P'); TypeMapping = t} programList) {execState with Term = (SmtTerm.And [SmtTerm.Var freshBranchVar; execState.Term])}
+                    let freshChoiceVar = ChoiceVariable (freshParameter, BOOL)
 
-                    let recRes2 = verifyRec {info with Trace = BranchRight::info.Trace} (Util.replaceAt targetIndex {Statement = Seq(P2, P'); TypeMapping = t} programList) {execState with Term = (SmtTerm.And [SmtTerm.Not (SmtTerm.Var freshBranchVar); execState.Term])}
+                    let recRes1 = verifyRec {info with Trace = BranchLeft::info.Trace} (Util.replaceAt targetIndex {Statement = Seq(P1, P'); TypeMapping = t} programList) {execState with Term = (SmtTerm.And [SmtTerm.Var freshChoiceVar; execState.Term])}
 
-                    mergeResults recRes1 recRes2
+                    let recRes2 = verifyRec {info with Trace = BranchRight::info.Trace} (Util.replaceAt targetIndex {Statement = Seq(P2, P'); TypeMapping = t} programList) {execState with Term = (SmtTerm.And [SmtTerm.Not (SmtTerm.Var freshChoiceVar); execState.Term])}
+
+                    mergeResults recRes1 recRes2 [(freshParameter, BOOL)]
             | {Statement = Seq(NondetAssign x, P'); TypeMapping = t} -> 
                 if targetIndex < k then 
                     let newTimeForX = execState.VariableTime.[x, targetIndex].Inc
